@@ -81,12 +81,16 @@ public_users.get('/title/:title',function (req, res) {
   for (let i=1;i<=10;i++) {
     console.log(books[i].title)
     if (books[i].title === title) {
-      tempBooks.push(books[i])
-      // res.send(JSON.stringify(books[i],null,4));
+        let book = {}
+        book.isbn = i.toString();
+        book.author = books[i].author;
+        book.reviews = books[i].reviews;
+        tempBooks.push(book)
     }
   }
   if (tempBooks.length > 0 ) {
-    res.send(JSON.stringify(tempBooks,null,4));
+    let booksByTitle = {"booksbytitle":tempBooks}
+    res.send(JSON.stringify(booksByTitle,null,4));
   }else {
     return res.status(300).json({message: "No book found"});
   }
@@ -98,7 +102,7 @@ public_users.get('/review/:isbn',function (req, res) {
   let isbn = req.params.isbn;
 
   if (isbn) {
-    res.send(JSON.stringify(books[isbn].reviews, null, 4))
+    res.send(books[isbn].reviews)
   } else {
     return res.status(300).json({message: "No book found"});
   }
