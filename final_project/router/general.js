@@ -20,7 +20,8 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  res.send(JSON.stringify(books,null,4));
+    let bookList = {books}
+  res.send(JSON.stringify(bookList,null,4));
 
   //Write your code here
   //return res.status(300).json({message: "Yet to be implemented"});
@@ -52,12 +53,17 @@ public_users.get('/author/:author',function (req, res) {
   for (let i=1;i<=10;i++) {
     console.log(books[i].author)
     if (books[i].author === author) {
-      tempBooks.push(books[i])
+        let book = {}
+        book.isbn = i.toString();
+        book.title = books[i].title;
+        book.reviews = books[i].reviews;
+      tempBooks.push(book)
       // res.send(JSON.stringify(books[i],null,4));
     }
   }
   if (tempBooks.length > 0 ) {
-    res.send(JSON.stringify(tempBooks,null,4));
+    let booksByAuth = {"booksbyauthor":tempBooks}
+    res.send(JSON.stringify(booksByAuth,null,4));
   }else {
     return res.status(300).json({message: "No book found"});
   }
